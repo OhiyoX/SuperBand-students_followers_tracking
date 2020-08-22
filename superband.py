@@ -37,14 +37,21 @@ class Superband():
                 stu_l.append(a_stu)
 
         for stu in self.stu_list:
-            detail = self.get_detail(stu['uid'])
-            detail_timestamp = time.time()
-            # 保存datail，相当于一个快照
-            temp_ = {'id': stu['id'],
-                     'uid': stu['uid'],
-                     'time': detail_timestamp,
-                     'alias': stu['alias'],
-                     'detail': detail['data']['userInfo']}
+            flagg = False
+            while flagg is False: # 解决api可能出错的情况
+                try:
+                    detail = self.get_detail(stu['uid'])
+                    detail_timestamp = time.time()
+                    # 保存datail，相当于一个快照
+                    temp_ = {'id': stu['id'],
+                             'uid': stu['uid'],
+                             'time': detail_timestamp,
+                             'alias': stu['alias'],
+                             'detail': detail['data']['userInfo']}
+                    flagg = True
+                except:
+                    time.sleep(5)
+
             stus_detail.append(temp_)
 
             # 保存时间点上的fans
@@ -97,7 +104,7 @@ class Superband():
                     u_['uid'] = uid
                 else:
                     u_['uid'] = uid_check.group()
-
+                time.sleep(1)
                 detail = self.get_detail(u_['uid'])
                 print(detail['data']['userInfo']['screen_name'] + ' is ok.')
                 u_['alias'] = detail['data']['userInfo']['screen_name']

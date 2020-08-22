@@ -1,4 +1,4 @@
 {
-  "test_mode": false,
+  "test_mode": true,
   "scheduler": true
 }
